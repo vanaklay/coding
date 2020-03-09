@@ -2,7 +2,7 @@
 
 BIRTHDATE="Jan 1, 2000"
 Presents=10
-BIRTHDAY=`date -d "$BIRTHDATE" +%A`
+BIRTHDAY=`date -jf "%b %d, %Y" "$BIRTHDATE" +%A`
 
 echo $BIRTHDAY
 if [ "$BIRTHDATE" == "Jan 1, 2000" ] ; then
