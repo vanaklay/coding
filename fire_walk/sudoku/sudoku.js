@@ -7,48 +7,49 @@ var arrayChecked = fs.readFileSync(arg[0], "utf8").split("\n");
 var sudoku = [];
 for (var i = 0; i < arrayChecked.length; i++){
   if (arrayChecked[i] != '---+---+---' && arrayChecked[i] != ''){
-    sudoku.push(arrayChecked[i]);
-  }
-}
-
-// 3. Pour une ligne quels sont les numéros possible ? *** partie où je bloque ***
-//
-var oneLine = sudoku[0]; // ==> 195|784|2__
-var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // ==> array numbers
-var tmp = []; // ==> [1, 9, 5, 7, 8, 4, 2] après boucle for en bas
-var restant = [];
-// donc pour chaque element de array numbers
-//      si numbers[i] not in tmp
-//          tu mets numbers[i] dans array restant
-
-for (var i = 0; i < oneLine.length; i++){
-    if ((oneLine[i] != "|") && (oneLine[i] != "_")) {
-      tmp.push(parseInt(oneLine[i]));
+    var tmp = [];
+    for (var j = 0; j < arrayChecked[i].length; j++){
+      if ((arrayChecked[i][j] != '|') && (arrayChecked[i][j] != '_')) {
+        tmp.push(parseInt(arrayChecked[i][j]));
+      }
+      else {
+        if (arrayChecked[i][j] == '_') {
+          tmp.push(0);
+        }
+      }
     }
-}
-// la boucle for ci dessous ne fait pas ce que je veux.
-// je veux que array restant = [0, 3, 6]
-for (var j = 0; j < numbers.length; j++) {
-  if ( numbers[j] in tmp) {
-    restant.push(parseInt(numbers[i]));
+    sudoku.push(tmp);
   }
 }
 
-console.log(restant); // ==> ça me retourne des Nan ... ??
+// 3. functions
+// function getCol ==> return all element in the given matrix and given position
+function getCol(matrix, col) {
+  var column = [];
+  for (var i =0; i < matrix.length; i++) {
+    column.push(matrix[i][col]);
+  }
+  return column;
+}
 
-// pour résoudre le sudoku :
-// il faut que le nombre ne soit ni sur l'axe des x
-// et ni sur l'axe des y
-// il ne peut y avoir que 9 numéro possible
-// donc numéro != ceux afficher
-// function qui check x et function qui check y
+var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-//test
+// 4. Puts all together
+for (i = 0; i < sudoku.length; i++) {
+  // for each array of sudoku
+  for (var j = 0; j < sudoku[i].length; j++) {
+    // for each element in each line
+    if (sudoku[i][j] == 0) {
+      var tmp = [];
+      var col = getCol(sudoku, j);
+      for (k = 0; k < numbers.length; k++){
+        if (!(sudoku[i].includes(numbers[k])) && !(col.includes(numbers[k]))) {
+          tmp.push(numbers[k]);
+          }
+        }
+      sudoku[i][j] = tmp.shift(); // erase the first element in tmp and add to variable
+      }
+    }
+  }
 
-// pour connaitre la position des trous
-// if (!(oneLine[i] in numbers) && (oneLine[i] != "|")) {
-//   // j'ai la position des trous
-//   console.log(oneLine[i], i);
-//   // si num in numbers alors je cree un autre array avec ces numbers
-//   // et une variable avec difference entre numbers_origine et new_numbers
-// }
+console.log(sudoku);
