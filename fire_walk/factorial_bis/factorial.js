@@ -22,7 +22,7 @@ function convertToString(entier) {
   return final;
 }
 
-// function add with retenue 
+// function add with retenue
 function add(num1, num2) {
   var sum = "";
   var num1ToString = num1.toString();
@@ -73,7 +73,13 @@ function add(num1, num2) {
 }
 function factorialByIteration(num) {
   if (Number.isSafeInteger(factorial(num))){
-    return factorial(num);
+    var temp = factorial(num).toString();
+    if (temp.length < 4) {
+      return temp;
+    }
+    if (temp.length >= 4) {
+      return convertToString(temp);
+    }
   }
   else {
     var fact = 1;
@@ -89,22 +95,22 @@ function factorialByIteration(num) {
 
 }
 
-
-function longFactorial(num) {
-  var entier = factorial(num);
-  var numToString = entier.toString();
-  console.log(numToString.length);
-  if (Number.isSafeInteger(factorial(num))){
-    console.log("à changer en string");
-  }
-  if ((numToString.length > 4) && (numToString.length < 20)) {
-    console.log(convertToString(numToString));
-  }
-  else {
-    entier = factorialByIteration(num);
-    return convertToString(numToString);
-  }
-}
+//
+// function longFactorial(num) {
+//   var entier = factorial(num);
+//   var numToString = entier.toString();
+//   console.log(numToString.length);
+//   if (Number.isSafeInteger(factorial(num))){
+//     console.log("à changer en string");
+//   }
+//   if ((numToString.length > 4) && (numToString.length < 20)) {
+//     console.log(convertToString(numToString));
+//   }
+//   else {
+//     entier = factorialByIteration(num);
+//     return convertToString(numToString);
+//   }
+// }
 
 
 // test
